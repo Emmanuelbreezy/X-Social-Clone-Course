@@ -9,8 +9,6 @@ const NotificationFeed = () => {
   const { data, isLoading } = useNotifications();
   const notifications = data?.data ?? [];
 
-  console.log(notifications, "notifications");
-
   if (isLoading) {
     return (
       <div className="flex flex-col h-[25vh] items-center w-full justify-center">

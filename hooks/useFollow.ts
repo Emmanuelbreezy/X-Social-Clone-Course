@@ -32,11 +32,12 @@ const useFollow = (userId: number, username: string) => {
         queryClient.invalidateQueries({
           queryKey: ["user", username],
         });
-      } else {
-        queryClient.invalidateQueries({
-          queryKey: ["currentUser"],
-        });
       }
+
+      queryClient.invalidateQueries({
+        queryKey: ["currentUser"],
+      });
+
       toast({
         title: "Success",
         description: response.isFollowing
