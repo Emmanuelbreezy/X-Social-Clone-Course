@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use server";
 
-import { auth, signIn, signOut } from "@/lib/auth";
+import { signIn, signOut } from "@/lib/auth";
 import { prisma } from "@/lib/prismadb";
 
 export async function doSocialLogin(formData: any) {

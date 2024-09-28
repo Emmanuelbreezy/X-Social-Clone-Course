@@ -38,7 +38,7 @@ export const DraftEditor: FC<PropsType> = ({
       const html = draftToHtml(convertRaw);
       onChange(html);
     },
-    [onChange]
+    [onChange, setEditorState]
   );
 
   return (

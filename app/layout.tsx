@@ -7,7 +7,6 @@ import { Toaster } from "@/components/ui/toaster";
 
 import "./globals.css";
 import QueryProvider from "@/context/query-provider";
-import { ModalProvider } from "@/context/modal-provider";
 
 const dmSans = Urbanist({ subsets: ["latin"] });
 

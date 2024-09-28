@@ -15,7 +15,7 @@ interface PropsType {
 }
 
 const UserBio: React.FC<PropsType> = ({ user }) => {
-  const { data, isLoading } = useCurrentUserContext();
+  const { data } = useCurrentUserContext();
   const currentUser = data?.currentUser ?? ({} as UserType);
   const { openEditModal } = useStore();
 
