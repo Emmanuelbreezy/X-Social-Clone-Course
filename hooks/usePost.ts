@@ -22,7 +22,7 @@ const usePosts = ({ userId, postId }: PropsType) => {
     ? ["posts", "user", userId] // Posts by a specific user
     : ["posts"]; // All posts
 
-  const { error, data, isLoading, refetch } = useQuery({
+  const { error, data, isLoading, isError, refetch } = useQuery({
     queryKey,
     queryFn: () => fetcher(url),
     enabled: !!url, // Only run query if the URL is valid
@@ -32,6 +32,7 @@ const usePosts = ({ userId, postId }: PropsType) => {
     data,
     error,
     isLoading,
+    isError,
     refetch, // Equivalent to mutate
   };
 };
