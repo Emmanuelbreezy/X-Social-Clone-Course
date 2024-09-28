@@ -16,12 +16,13 @@ const FollowButton: FC<PropsType> = ({ userId, username }) => {
   return (
     <Button
       type="button"
-      variant={isFollowing ? "outline" : "brandSecondary"}
+      variant={isFollowing ? "brandOutline" : "brandSecondary"}
       title={isFollowing ? "Unfollow" : "Follow"}
       disabled={loading}
       onClick={toggleFollow}
       className={cn("!font-semibold  gap-1", {
-        "hover:!border-red-500 text-sm hover:bg-red-500/10": isFollowing,
+        "hover:!border-red-500 hover:!text-white text-sm hover:bg-red-500/10":
+          isFollowing,
       })}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}

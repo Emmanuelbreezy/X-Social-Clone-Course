@@ -87,12 +87,12 @@ const PostItem: React.FC<PropsType> = React.memo(({ post, userId }) => {
       <div className="flex flex-row items-start gap-3">
         <Avatar role="button" onClick={goToUser}>
           <AvatarImage
-            src={post?.user?.profileImage || post?.user?.image || ""}
+            src={post?.user?.profileImage || ""}
             alt={post?.user.username || ""}
             className="object-cover"
           />
-          <AvatarFallback className="font-bold text-[60px]">
-            {post?.user?.name}
+          <AvatarFallback className="font-bold">
+            {post?.user?.name?.[0]}
           </AvatarFallback>
         </Avatar>
         <div className="w-full">

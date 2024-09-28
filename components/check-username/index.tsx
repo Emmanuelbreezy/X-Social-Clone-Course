@@ -6,10 +6,9 @@ import { Input } from "@/components/ui/input";
 import { Loader2, CheckCircle, XCircle } from "lucide-react";
 import { useFormContext } from "react-hook-form";
 import { useDebounce } from "@/hooks/useDebounce"; // A debounce hook to prevent excessive API calls
-import { checkUsername } from "@/app/actions/check-username.action";
 import { generateBaseUsername } from "@/lib/helper";
 
-const CheckUsername = ({ fullname }: { fullname: string }) => {
+const CheckUsername = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [isAvailable, setIsAvailable] = useState<boolean | null>(null);
   const [suggestions, setSuggestions] = useState<string[]>([]);

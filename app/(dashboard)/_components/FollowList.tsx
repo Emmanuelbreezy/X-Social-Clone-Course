@@ -47,7 +47,7 @@ const FollowList = () => {
               >
                 <Avatar className="transition cursor-pointer hover:opacity-90">
                   <AvatarImage
-                    src={user?.profileImage || user?.image || ""}
+                    src={user?.profileImage || ""}
                     className="object-cover"
                   />
                   <AvatarFallback className="font-bold text-[18px]">

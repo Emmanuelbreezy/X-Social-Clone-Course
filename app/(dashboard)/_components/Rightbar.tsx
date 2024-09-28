@@ -8,7 +8,7 @@ import SearchForm from "./SearchForm";
 const Rightbar = (props: { isPro: boolean }) => {
   const pathname = usePathname();
   return (
-    <aside className="px-0 sticky top-0 py-4 hidden lg:flex min-w-[330px]">
+    <aside className="px-0 fixed top-0 py-4 hidden lg:flex min-w-[330px]">
       <div className="w-full flex flex-col gap-3 max-w-[330px]">
         {/* {Search bar} */}
         {pathname !== "/search" && <SearchForm />}

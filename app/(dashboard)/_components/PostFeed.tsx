@@ -1,6 +1,6 @@
 "use client";
 import React from "react";
-import usePosts from "@/hooks/usePosts";
+import usePosts from "@/hooks/usePost";
 import PostItem from "./_common/PostItem";
 import { PostType } from "@/types/post.type";
 import { Spinner } from "@/components/spinner";

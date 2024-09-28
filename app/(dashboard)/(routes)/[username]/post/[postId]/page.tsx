@@ -1,7 +1,7 @@
 "use client";
 import React from "react";
 import { Spinner } from "@/components/spinner";
-import usePosts from "@/hooks/usePosts";
+import usePosts from "@/hooks/usePost";
 import { useParams } from "next/navigation";
 import Header from "../../../../_components/_common/Header";
 import PostItem from "../../../../_components/_common/PostItem";
@@ -29,7 +29,7 @@ const PostView = () => {
       <PostForm
         placeholder="Post your reply"
         postId={post.id}
-        postUsername={post?.user?.username}
+        postUsername={post?.user?.username ?? ""}
         isComment
       />
       <CommentFeed comments={post?.comments} />

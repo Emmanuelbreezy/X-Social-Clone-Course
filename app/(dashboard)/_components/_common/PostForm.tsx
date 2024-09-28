@@ -5,9 +5,8 @@ import { z } from "zod";
 import axios from "axios";
 import Link from "next/link";
 import { FormProvider, useForm } from "react-hook-form";
-import { EditorState } from "draft-js";
-import usePosts from "@/hooks/usePosts";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useQueryClient } from "@tanstack/react-query";
 
 import { UserType } from "@/types/user.type";
 import { toast } from "@/hooks/use-toast";
@@ -20,6 +19,7 @@ import useUploadcare from "@/hooks/useUploadcare";
 import { postComment } from "@/app/actions/coment.action";
 import UploadButton from "@/components/upload-button";
 import { useCurrentUserContext } from "@/context/currentuser-provider";
+import { EditorState } from "draft-js";
 
 interface PropsType {
   placeholder: string;
@@ -36,11 +36,10 @@ const PostForm: FC<PropsType> = ({
   const { base64, uploadFile, uploadedUrl, uploading, clearFile } =
     useUploadcare();
   const { data, isLoading } = useCurrentUserContext();
-  const { mutate: mutatePosts } = usePosts({});
-  const { mutate } = usePosts({ postId });
+  const queryClient = useQueryClient();
 
   const [loading, setLoading] = useState(false);
-  const [editorState, setEditorState] = useState<EditorState>(
+  const [editorState, setEditorState] = useState(() =>
     EditorState.createEmpty()
   );
 
@@ -91,8 +90,18 @@ const PostForm: FC<PropsType> = ({
         setEditorState(EditorState.createEmpty());
         form.reset();
         clearFile();
-        mutatePosts();
-        mutate();
+
+        if (postId) {
+          // Invalidate the specific post query
+          queryClient.invalidateQueries({
+            queryKey: ["post", postId?.toString()],
+          });
+        } else {
+          // Invalidate all posts query (for homepage)
+          queryClient.invalidateQueries({
+            queryKey: ["posts"],
+          });
+        }
       } catch (err) {
         toast({
           title: "Error",
@@ -103,7 +112,7 @@ const PostForm: FC<PropsType> = ({
         setLoading(false);
       }
     },
-    [clearFile, form, isComment, mutate, mutatePosts, postId, uploadedUrl]
+    [clearFile, form, isComment, postId, queryClient, uploadedUrl]
   );
 
   const handleUploadFile = useCallback(
@@ -150,7 +159,7 @@ const PostForm: FC<PropsType> = ({
                 )}
                 <div className="min-h-6 peer !max-h-80 overflow-auto overflow-x-hidden mb-3">
                   <DraftEditor
-                    placeholder={placeholder}
+                    placeholder={placeholder || ""}
                     wrapperClassName="!min-h-6 !max-h-80 !border-none w-full"
                     editorClassName="placeholder:text-muted-foreground peer outline-0 px-0 focus-visible:outline-none text-[18px] resize-none !py-0 w-full focus:border-0 !border-none "
                     editorState={editorState}

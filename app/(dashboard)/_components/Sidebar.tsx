@@ -1,7 +1,15 @@
 "use client";
 import Logo from "@/components/logo";
 import React from "react";
-import { Bell, Home, LucideIcon, Search, Settings, User } from "lucide-react";
+import {
+  AlertTriangle,
+  Bell,
+  Home,
+  LucideIcon,
+  Search,
+  Settings,
+  User,
+} from "lucide-react";
 //import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import {
@@ -16,6 +24,7 @@ import { UserType } from "@/types/user.type";
 import SidebarTweetButton from "./_common/SidebarTweetButton";
 import SidebarItem from "./_common/SidebarItem";
 import { useCurrentUserContext } from "@/context/currentuser-provider";
+import { Button } from "@/components/ui/button";
 
 interface MenuType {
   label: string;
@@ -28,8 +37,7 @@ const Sidebar = (props: { isPro: boolean }) => {
   const { isPro } = props;
   const router = useRouter();
 
-  const { data, isLoading } = useCurrentUserContext();
-  console.log(data, "data");
+  const { data, isLoading, refetch } = useCurrentUserContext();
   const fetchedUser: UserType = data?.currentUser ?? ({} as UserType);
   const username = fetchedUser?.username;
 
@@ -101,7 +109,7 @@ const Sidebar = (props: { isPro: boolean }) => {
           <div className="flex-shrink-1">
             {isLoading ? (
               <Spinner size="lg" />
-            ) : (
+            ) : fetchedUser?.id ? (
               <DropdownMenu>
                 <DropdownMenuTrigger className="!outline-none">
                   <SidebarItem
@@ -131,6 +139,11 @@ const Sidebar = (props: { isPro: boolean }) => {
                   </DropdownMenuItem>
                 </DropdownMenuContent>
               </DropdownMenu>
+            ) : (
+              <Button variant="ghost" className="gap-2" onClick={refetch}>
+                <AlertTriangle />
+                Retry
+              </Button>
             )}
           </div>
         </div>

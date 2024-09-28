@@ -1,18 +1,18 @@
+import { useQuery } from "@tanstack/react-query";
 import { BASE_URL } from "@/lib/base-url";
 import fetcher from "@/lib/fetcher";
-import useSWR from "swr";
 
 const useUsers = () => {
-  const { data, error, isLoading, mutate } = useSWR(
-    `${BASE_URL}/api/users`,
-    fetcher
-  );
+  const { data, error, isLoading, refetch } = useQuery({
+    queryKey: ["users", "allusers"], // Unique query key for the users
+    queryFn: () => fetcher(`${BASE_URL}/api/users`), // Fetch the users
+  });
 
   return {
     data,
     error,
     isLoading,
-    mutate,
+    refetch, // Refetch function
   };
 };
 

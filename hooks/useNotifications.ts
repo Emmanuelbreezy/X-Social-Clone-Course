@@ -1,18 +1,18 @@
 import { BASE_URL } from "@/lib/base-url";
 import fetcher from "@/lib/fetcher";
-import useSWR from "swr";
+import { useQuery } from "@tanstack/react-query";
 
 const useNotifications = () => {
-  const { data, error, isLoading, mutate } = useSWR(
-    `${BASE_URL}/api/notifications`,
-    fetcher
-  );
+  const { data, error, isLoading, refetch } = useQuery({
+    queryKey: ["notifications"], // Unique key for the notifications query
+    queryFn: () => fetcher(`${BASE_URL}/api/notifications`), // Fetch notifications using the fetcher
+  });
 
   return {
     data,
     error,
     isLoading,
-    mutate,
+    refetch, // Function to manually trigger a refetch
   };
 };
 

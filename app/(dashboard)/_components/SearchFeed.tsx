@@ -59,7 +59,7 @@ const SearchFeed = () => {
       <TabsContent value="posts" className="w-full">
         <div className="w-full flex flex-col items-center justify-center">
           {isLoading ? (
-            <Spinner size="lg" />
+            <Spinner size="icon" />
           ) : posts?.length === 0 ? (
             <div className=" w-full p-6">
               <p className="text-xl text-center  dark:text-white/80">
@@ -78,7 +78,7 @@ const SearchFeed = () => {
       <TabsContent value="people" className=" px-5">
         <div className="flex items-center justify-center">
           {isLoading ? (
-            <Spinner size="lg" />
+            <Spinner size="icon" />
           ) : users?.length === 0 ? (
             <div className=" w-full p-6">
               <p className="text-xl text-center dark:text-white/80">
@@ -101,7 +101,7 @@ const SearchFeed = () => {
                   >
                     <Avatar className="transition cursor-pointer hover:opacity-90">
                       <AvatarImage
-                        src={user?.profileImage || user?.image || ""}
+                        src={user?.profileImage || ""}
                         className="object-cover"
                       />
                       <AvatarFallback className="font-bold text-[18px]">

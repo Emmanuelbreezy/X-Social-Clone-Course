@@ -1,7 +1,6 @@
 "use server";
 import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/prismadb";
-import { revalidatePath } from "next/cache";
 
 export async function likePost(postId: number) {
   const session = await auth();
@@ -88,29 +87,11 @@ export async function likePost(postId: number) {
       },
     });
 
-    // if (post?.userId && !updatedLikeIds.includes(currentUserId)) {
-    //   try {
-    //     await prisma.$transaction([
-    //       prisma.notification.create({
-    //         data: {
-    //           body: `liked your post`,
-    //           userId: currentUserId,
-    //         },
-    //       }),
-    //       prisma.user.update({
-    //         where: { id: post.userId },
-    //         data: { hasNotification: true },
-    //       }),
-    //     ]);
-    //   } catch (err) {
-    //     console.error("Error creating notification or updating user:", err);
-    //   }
-    // }
     const isLiked = updatedPost.likedIds.includes(currentUserId);
 
-    revalidatePath("/home");
-    revalidatePath("/notifications");
-    revalidatePath(`/${updatedPost?.user?.username}/post/${updatedPost.id}`);
+    // revalidatePath("/home");
+    // revalidatePath("/notifications");
+    // revalidatePath(`/${updatedPost?.user?.username}/post/${updatedPost.id}`);
 
     return {
       isLiked,

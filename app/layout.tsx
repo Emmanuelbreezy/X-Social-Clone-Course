@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { DM_Sans } from "next/font/google";
+import { Urbanist } from "next/font/google";
 import { cn } from "@/lib/utils";
 import { ThemeProvider } from "@/context/theme-provider";
 import SessionProviders from "@/context/session-provider";
@@ -9,7 +9,7 @@ import "./globals.css";
 import QueryProvider from "@/context/query-provider";
 import { ModalProvider } from "@/context/modal-provider";
 
-const dmSans = DM_Sans({ subsets: ["latin"] });
+const dmSans = Urbanist({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: "Social Clone",
@@ -32,7 +32,6 @@ export default function RootLayout({
               enableSystem
               disableTransitionOnChange
             >
-              <ModalProvider />
               {children}
               <Toaster />
             </ThemeProvider>

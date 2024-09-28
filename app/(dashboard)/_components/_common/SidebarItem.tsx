@@ -44,7 +44,7 @@ const SidebarItem: FC<PropsType> = (props) => {
   const handleOpenModal = useCallback(() => {
     if (href !== "#premium") return;
     openProModal();
-  }, []);
+  }, [href, openProModal]);
 
   return (
     <div
@@ -115,7 +115,7 @@ const SidebarItem: FC<PropsType> = (props) => {
                 {userInfo?.fullname?.[0]}
               </AvatarFallback>
             </Avatar>
-            <div className="flex flex-row w-full justify-between">
+            <div className="flex flex-row w-full justify-between gap-2">
               <div className="flex-1 text-left">
                 <h3 className="text-[16px] text-[#14171A] dark:text-white block max-w-[150px] truncate font-bold leading-tight">
                   {userInfo?.fullname}
@@ -124,7 +124,9 @@ const SidebarItem: FC<PropsType> = (props) => {
                   @{userInfo?.username}
                 </p>
               </div>
-              <Ellipsis />
+              <div className="shrink-0 flex justify-end">
+                <Ellipsis />
+              </div>
             </div>
           </div>
         ) : (

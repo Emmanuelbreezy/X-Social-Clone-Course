@@ -135,14 +135,11 @@ const RegisterFormModal = () => {
             <FormField
               control={form.control}
               name="username"
-              render={({ field }) => (
+              render={() => (
                 <FormItem className="w-full">
                   <FormLabel>Username</FormLabel>
                   <FormControl>
-                    <CheckUsername
-                      {...{ field }}
-                      fullname={form?.getValues().name}
-                    />
+                    <CheckUsername />
                   </FormControl>
                   <FormMessage />
                 </FormItem>

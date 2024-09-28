@@ -1,15 +1,14 @@
 "use client";
 import { followUser } from "@/app/actions/follow.action";
+import { useQueryClient } from "@tanstack/react-query";
 import { useCallback, useMemo, useState } from "react";
 import { useCurrentUserContext } from "@/context/currentuser-provider";
 import { UserType } from "@/types/user.type";
 import { toast } from "./use-toast";
-import useUser from "./useUser";
 
 const useFollow = (userId: number, username: string) => {
-  const { data, mutate: mutateCurrentUser } = useCurrentUserContext();
-
-  const { mutate: mutateFetchUser } = useUser(username);
+  const { data } = useCurrentUserContext();
+  const queryClient = useQueryClient();
 
   const [loading, setLoading] = useState<boolean>(false);
 
@@ -28,8 +27,16 @@ const useFollow = (userId: number, username: string) => {
     try {
       setLoading(true);
       const response = await followUser(userId);
-      mutateCurrentUser();
-      mutateFetchUser();
+      // Invalidate all posts query (for homepage)
+      if (username) {
+        queryClient.invalidateQueries({
+          queryKey: ["user", username],
+        });
+      } else {
+        queryClient.invalidateQueries({
+          queryKey: ["currentUser"],
+        });
+      }
       toast({
         title: "Success",
         description: response.isFollowing
@@ -46,7 +53,7 @@ const useFollow = (userId: number, username: string) => {
     } finally {
       setLoading(false);
     }
-  }, [mutateCurrentUser, mutateFetchUser, userId]);
+  }, [queryClient, userId, username]);
 
   return {
     loading,

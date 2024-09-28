@@ -1,19 +1,13 @@
 "use client";
 import { useCallback, useMemo, useState } from "react";
+import { useQueryClient } from "@tanstack/react-query";
 import { likePost } from "@/app/actions/like.action";
-import { toast } from "./use-toast";
 import { useCurrentUserContext } from "@/context/currentuser-provider";
-import usePosts from "./usePosts";
-//import { useSession } from "next-auth/react";
+import { toast } from "./use-toast";
 
 const useLike = (postId: number, likedIds: number[], userId?: number) => {
   const { data } = useCurrentUserContext();
-  //const session = useSession();
-  //const { mutate: mutatePosts } = usePosts({});
-  const { mutate: mutateFetchPost } = usePosts({
-    postId: postId,
-  });
-  const { mutate: mutateFetchPosts } = usePosts({ userId: userId });
+  const queryClient = useQueryClient();
 
   const [loading, setLoading] = useState<boolean>(false);
 
@@ -26,8 +20,30 @@ const useLike = (postId: number, likedIds: number[], userId?: number) => {
     try {
       setLoading(true);
       const response = await likePost(postId);
-      mutateFetchPost();
-      mutateFetchPosts();
+
+      // Invalidate queries after the like/unlike action
+      if (postId) {
+        console.log(postId, "postId");
+        // Invalidate the specific post query
+        queryClient.invalidateQueries({
+          queryKey: ["post", postId?.toString()],
+        });
+      }
+
+      if (postId) {
+        // Invalidate all posts query (for homepage)
+        queryClient.invalidateQueries({
+          queryKey: ["posts"],
+        });
+      }
+
+      // Optionally, invalidate user posts if you're viewing a user's posts
+      if (userId) {
+        queryClient.invalidateQueries({
+          queryKey: ["posts", "user", userId],
+        });
+      }
+
       toast({
         title: "Sucess",
         description: `${
@@ -45,7 +61,7 @@ const useLike = (postId: number, likedIds: number[], userId?: number) => {
     } finally {
       setLoading(false);
     }
-  }, [mutateFetchPost, mutateFetchPosts, postId]);
+  }, [postId, queryClient, userId]);
 
   return {
     loading,

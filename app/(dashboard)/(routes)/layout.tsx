@@ -9,6 +9,7 @@ import { PLAN_TYPE } from "@/constants/pricing-plans";
 // import { Spinner } from "@/components/spinner";
 import { auth } from "@/lib/auth";
 import { CurrentUserProvider } from "@/context/currentuser-provider";
+import { ModalProvider } from "@/context/modal-provider";
 
 async function MainLayout({ children }: { children: ReactNode }) {
   const session = await auth();
@@ -43,6 +44,7 @@ async function MainLayout({ children }: { children: ReactNode }) {
   return (
     <CurrentUserProvider>
       <Fragment>
+        <ModalProvider />
         <EditProfileModal />
         <div className="h-screen">
           <div className="container h-full mx-auto xl:px-30 max-w-7xl">
@@ -51,10 +53,12 @@ async function MainLayout({ children }: { children: ReactNode }) {
                 <Sidebar {...{ isPro }} />
               </div>
               <div className="flex flex-row h-screen flex-1 gap-0 lg:gap-8">
-                <main className="!bg-background lg:max-w-[600px] relative h-screen flex-1 lg:flex-[0.95] border-x dark:border-[rgb(47,51,54)]">
+                <main className="!bg-background lg:max-w-[600px] relative h-screen flex-1 flex lg:flex-[0.95] ">
+                  <hr className="w-[1px] fixed h-screen bg-[#eee] dark:bg-[rgb(47,51,54)]" />
                   <div className="w-full">{children}</div>
+                  <hr className="w-[1px] fixed right-0 lg:right-[calc(100%-71%)]  xl:right-[calc(100%-66%)] top-0 h-screen bg-[#eee] dark:bg-[rgb(47,51,54)]" />
                 </main>
-                <div className="hidden lg:flex shrink-0 relative min-h-[600px]">
+                <div className="hidden lg:flex shrink-0 relative h-screen">
                   <Rightbar {...{ isPro }} />
                 </div>
               </div>
