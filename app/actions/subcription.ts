@@ -2,6 +2,7 @@
 import { PLAN_TYPE } from "@/constants/pricing-plans";
 import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/prismadb";
+import { isDynamicServerError } from "next/dist/client/components/hooks-server-context";
 
 const DAY_IN_MS = 86_400_000; // 1day in milliseconds
 
@@ -41,6 +42,9 @@ export async function checkUserSubscription() {
     // Return "pro plan" if valid, otherwise return "free plan"
     return isProPlanValid ? PLAN_TYPE.PRO : PLAN_TYPE.FREE;
   } catch (error) {
+    if (isDynamicServerError(error)) {
+      throw new Error("dynamic server error: ");
+    }
     console.log(error);
     throw new Error("error occurred while");
   }
