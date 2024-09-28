@@ -66,7 +66,7 @@ const BirthDayModal = () => {
         setLoading(false);
       }
     },
-    [queryClient, closeBirthDateModal]
+    [queryClient, closeBirthDateModal, form]
   );
 
   return (

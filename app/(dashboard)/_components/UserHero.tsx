@@ -7,8 +7,8 @@ interface PropsType {
   user: UserType;
 }
 const UserHero: React.FC<PropsType> = ({ user }) => {
-  const { coverImage, username, profileImage, image, name } = user;
-  const avatarImg = profileImage ? profileImage : image;
+  const { coverImage, username, profileImage, name } = user;
+  const avatarImg = profileImage || "";
   return (
     <div>
       <div className="bg-neutral-700 h-44 relative">

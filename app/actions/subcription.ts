@@ -42,5 +42,6 @@ export async function checkUserSubscription() {
     return isProPlanValid ? PLAN_TYPE.PRO : PLAN_TYPE.FREE;
   } catch (error) {
     console.log(error);
+    throw new Error("error occurred while");
   }
 }
