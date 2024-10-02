@@ -7,9 +7,16 @@ import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prismadb";
 import { PLAN_TYPE } from "@/constants/pricing-plans";
 
+export const config = {
+  api: {
+    bodyParser: false, // Disable the body parser for this route
+  },
+};
+
+
 export async function POST(req: Request) {
-  const body = await req.text();
-  const signature = headers().get("stripe-signature") as string;
+  const buf = await buffer(req); // Get the raw request body as a buffer
+  const signature = req.headers.get("stripe-signature");
 
   if (!signature) {
     console.error("Missing Stripe signature");
@@ -81,4 +88,26 @@ export async function POST(req: Request) {
   }
 
   return new NextResponse(null, { status: 200 });
+}
+
+
+// Helper function to handle the raw body as a buffer
+async function buffer(request: Request): Promise<Buffer> {
+  const chunks: Uint8Array[] = [];
+  const readableStream = request.body;
+
+  if (readableStream) {
+    const reader = readableStream.getReader();
+
+    let done = false;
+    while (!done) {
+      const { value, done: readerDone } = await reader.read();
+      if (value) {
+        chunks.push(value);
+      }
+      done = readerDone;
+    }
+  }
+
+  return Buffer.concat(chunks);
 }
