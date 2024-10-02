@@ -9,7 +9,8 @@ import { PLAN_TYPE } from "@/constants/pricing-plans";
 
 
 export async function POST(req: Request) {
-  const buf = await buffer(req); // Get the raw request body as a buffer
+  const body = await req.arrayBuffer();
+  const buf = Buffer.from(body); // Convert ArrayBuffer to Buffer
   const signature = req.headers.get("stripe-signature");
 
   if (!signature) {
@@ -82,26 +83,4 @@ export async function POST(req: Request) {
   }
 
   return new NextResponse(null, { status: 200 });
-}
-
-
-// Helper function to handle the raw body as a buffer
-async function buffer(request: Request): Promise<Buffer> {
-  const chunks: Uint8Array[] = [];
-  const readableStream = request.body;
-
-  if (readableStream) {
-    const reader = readableStream.getReader();
-
-    let done = false;
-    while (!done) {
-      const { value, done: readerDone } = await reader.read();
-      if (value) {
-        chunks.push(value);
-      }
-      done = readerDone;
-    }
-  }
-
-  return Buffer.concat(chunks);
 }
