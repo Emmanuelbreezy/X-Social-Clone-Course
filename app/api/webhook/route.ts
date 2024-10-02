@@ -1,6 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import Stripe from "stripe";
-import { headers } from "next/headers";
 
 import { stripe } from "@/lib/stripe";
 import { NextResponse } from "next/server";
