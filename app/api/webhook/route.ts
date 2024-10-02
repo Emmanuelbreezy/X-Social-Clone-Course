@@ -7,12 +7,6 @@ import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prismadb";
 import { PLAN_TYPE } from "@/constants/pricing-plans";
 
-export const config = {
-  api: {
-    bodyParser: false, // Disable the body parser for this route
-  },
-};
-
 
 export async function POST(req: Request) {
   const buf = await buffer(req); // Get the raw request body as a buffer
